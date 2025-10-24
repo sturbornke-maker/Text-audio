@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioText Pro | Smart Conversion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .pricing-badge {
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+        
+        .free-trials {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px auto;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .service-card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            color: #667eea;
+        }
+        
+        .card-header h2 {
+            font-size: 1.4rem;
+            color: #333;
+            flex: 1;
+        }
+        
+        .price-tag {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .feature-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .feature-tab {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: 2px solid transparent;
+        }
+        
+        .feature-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .feature-content {
+            display: none;
+        }
+        
+        .feature-content.active {
+            display: block;
+        }
+        
+        .input-section {
+            margin-bottom: 20px;
+        }
+        
+        .input-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            resize: vertical;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .file-upload {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+        
+        .file-upload i {
+            font-size: 2.2rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .file-upload p {
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .recording-controls, .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .record-btn, .camera-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .record-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .record-btn.recording {
+            background: #ff4757;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .camera-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .video-preview, .image-preview, .captured-image {
+            width: 100%;
+            max-height: 250px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+            object-fit: cover;
+        }
+        
+        .audio-player {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .convert-btn {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+        
+        .convert-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .convert-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .clear-btn {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .clear-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .result-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-height: 100px;
+        }
+        
+        .result-section h3 {
+            margin-bottom: 10px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-text {
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .trial-counter {
+            background: #e3f2fd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+            color: #1976d2;
+        }
+        
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .payment-content h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .payment-options {
+            margin: 20px 0;
+        }
+        
+        .payment-btn {
+            background: #00A650;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        
+        .payment-btn:hover {
+            background: #008F43;
+        }
+        
+        .close-modal {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .mpesa-instructions {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: left;
+        }
+        
+        .mpesa-instructions ol {
+            margin-left: 20px;
+        }
+        
+        .mpesa-instructions li {
+            margin-bottom: 8px;
+            color: #2e7d32;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .recording-controls, .camera-controls {
+                flex-direction: column;
+            }
+            
+            .feature-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 AudioText Pro</h1>
+            <p>Convert between audio and text seamlessly with AI-powered technology</p>
+            <div class="free-trials">
+                <i class="fas fa-gift"></i> 2 FREE Trials on Each Service!
+            </div>
+            <div class="pricing-badge">
+                Basic: $1 per page | Advanced: $2 per task
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- Basic Service Card -->
+            <div class="service-card">
+                <div class="card-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h2>Basic Conversion</h2>
+                    <div class="price-tag">$1</div>
+                </div>
+                
+                <div class="trial-counter">
+                    <i class="fas fa-bolt"></i> Free Trials Left: <span id="basicTrials">2</span>
+                </div>
+                
+                <div class="feature-tabs">
+                    <div class="feature-tab active" data-tab="audio-to-text-basic">Audio to Text</div>
+                    <div class="feature-tab" data-tab="text-to-audio-basic">Text to Audio</div>
+                </div>
+                
+                <div class="feature-content active" id="audio-to-text-basic">
+                    <div class="input-section">
+                        <label>Upload Audio File</label>
+                        <div class="file-upload" id="audioUploadBasic">
+                            <i class="fas fa-file-audio"></i>
+                            <p>Tap to upload audio file</p>
+                            <p>MP3, WAV, M4A</p>
+                        </div>
+                        <input type="file" id="audioFileBasic" accept="audio/*" style="display: none;">
+                        <div class="audio-player" id="audioPlayerBasic" style="display: none;">
+                            <audio controls style="width: 100%;"></audio>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-content" id="text-to-audio-basic">
+                    <div class="input-section">
+                        <label>Enter Text to Convert</label>
+                        <textarea id="textInputBasic" placeholder="Type or paste your text here..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="convert-btn" id="convertBasic">
+                        <i class="fas fa-magic"></i> Convert Now
+                    </button>
+                    <button class="clear-btn" id="clearBasic">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                
+                <div class="result-section">
+                    <h3><i class="fas fa-file-alt"></i> Result</h3>
+                    <div class="result-text" id="resultBasic">
+                        Your conversion result will appear here...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Service Card -->
+            <div class="service-card">
+                <div class="card-header">
+                    <i class="fas fa-star"></i>
+                    <h2>Advanced Features</h2>
+                    <div class="price-tag">$2</div>
+                </div>
+                
+                <div class="trial-counter">
+                    <i class="fas fa-bolt"></i> Free Trials Left: <span id="advancedTrials">2</span>
+                </div>
+                
+                <div class="feature-tabs">
+                    <div class="feature-tab active" data-tab="live-record">Live Record</div>
+                    <div class="feature-tab" data-tab="camera-capture">Camera Capture</div>
+                </div>
+                
+                <div class="feature-content active" id="live-record">
+                    <div class="input-section">
+                        <label>Live Audio Recording</label>
+                        <div class="recording-controls">
+                            <button class="record-btn" id="startRecord">
+                                <i class="fas fa-microphone"></i> Start Recording
+                            </button>
+                            <button class="record-btn" id="stopRecord" disabled>
+                                <i class="fas fa-stop"></i> Stop Recording
+                            </button>
+                        </div>
+                        <div class="audio-player" id="recordedAudio" style="display: none;">
+                            <audio controls style="width: 100%;"></audio>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-content" id="camera-capture">
+                    <div class="input-section">
+                        <label>Camera Text Capture</label>
+                        <div class="camera-controls">
+                            <button class="camera-btn" id="startCamera">
+                                <i class="fas fa-camera"></i> Start Camera
+                            </button>
+                            <button class="camera-btn" id="captureImage" disabled>
+                                <i class="fas fa-camera-retro"></i> Capture Text
+                            </button>
+                        </div>
+                        <video class="video-preview" id="videoPreview" autoplay playsinline></video>
+                        <img class="captured-image" id="capturedImage" alt="Captured text image">
+                        
+                        <div class="file-upload" id="imageUploadAdvanced" style="margin-top: 15px;">
+                            <i class="fas fa-file-image"></i>
+                            <p>Or upload image file</p>
+                            <p>JPG, PNG, PDF</p>
+                        </div>
+                        <input type="file" id="imageFileAdvanced" accept="image/*,.pdf" style="display: none;">
+                        <img class="image-preview" id="imagePreviewAdvanced" alt="Image preview">
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="convert-btn" id="convertAdvanced">
+                        <i class="fas fa-robot"></i> Process Content
+                    </button>
+                    <button class="clear-btn" id="clearAdvanced">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                
+                <div class="result-section">
+                    <h3><i class="fas fa-file-alt"></i> Result</h3>
+                    <div class="result-text" id="resultAdvanced">
+                        Your processed content will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Modal -->
+        <div class="payment-modal" id="paymentModal">
+            <div class="payment-content">
+                <h3><i class="fas fa-lock"></i> Secure Payment Required</h3>
+                <p>Complete payment to unlock this feature</p>
+                
+                <div class="mpesa-instructions">
+                    <h4>M-Pesa Instructions:</h4>
+                    <ol>
+                        <li>Tap "Pay via M-Pesa" below</li>
+                        <li>Check your phone for M-Pesa prompt</li>
+                        <li>Enter your M-Pesa PIN when requested</li>
+                        <li>Wait for confirmation</li>
+                    </ol>
+                </div>
+                
+                <div class="payment-options">
+                    <button class="payment-btn" id="confirmPayment">
+                        <i class="fas fa-mobile-alt"></i> Pay via M-Pesa
+                    </button>
+                    <button class="close-modal" id="cancelPayment">
+                        Cancel Payment
+                    </button>
+                </div>
+                
+                <p style="font-size: 0.8rem; color: #666; margin-top: 15px;">
+                    <i class="fas fa-shield-alt"></i> Your payment details are secure and encrypted
+                </p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>AudioText Pro &copy; 2023 | Secure & Reliable Conversions</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">
+                <i class="fas fa-lock"></i> All payments processed securely
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Trial counters
+        let basicTrials = 2;
+        let advancedTrials = 2;
+
+        // Feature tabs functionality
+        document.querySelectorAll('.feature-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                const card = this.closest('.service-card');
+                
+                // Update active tab
+                card.querySelectorAll('.feature-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding content
+                card.querySelectorAll('.feature-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                card.querySelector(`#${tabId}`).classList.add('active');
+            });
+        });
+
+        // Basic Service File Upload
+        document.getElementById('audioUploadBasic').addEventListener('click', () => {
+            document.getElementById('audioFileBasic').click();
+        });
+
+        document.getElementById('audioFileBasic').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const audio = document.querySelector('#audioPlayerBasic audio');
+                audio.src = URL.createObjectURL(file);
+                document.getElementById('audioPlayerBasic').style.display = 'block';
+            }
+        });
+
+        // Advanced Service File Upload
+        document.getElementById('imageUploadAdvanced').addEventListener('click', () => {
+            document.getElementById('imageFileAdvanced').click();
+        });
+
+        document.getElementById('imageFileAdvanced').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                document.getElementById('imagePreviewAdvanced').src = URL.createObjectURL(file);
+                document.getElementById('imagePreviewAdvanced').style.display = 'block';
+            }
+        });
+
+        // Live Recording functionality
+        let mediaRecorder;
+        let audioChunks = [];
+        const startRecordBtn = document.getElementById('startRecord');
+        const stopRecordBtn = document.getElementById('stopRecord');
+
+        startRecordBtn.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = document.querySelector('#recordedAudio audio');
+                    audio.src = audioUrl;
+                    document.getElementById('recordedAudio').style.display = 'block';
+                };
+                
+                mediaRecorder.start();
+                startRecordBtn.disabled = true;
+                stopRecordBtn.disabled = false;
+                startRecordBtn.classList.add('recording');
+                
+            } catch (error) {
+                alert('Microphone access is required for live recording. Please allow permission.');
+            }
+        });
+
+        stopRecordBtn.addEventListener('click', () => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                startRecordBtn.disabled = false;
+                stopRecordBtn.disabled = true;
+                startRecordBtn.classList.remove('recording');
+                
+                // Stop all tracks
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Camera functionality
+        const startCameraBtn = document.getElementById('startCamera');
+        const captureImageBtn = document.getElementById('captureImage');
+        let stream = null;
+
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('videoPreview').srcObject = stream;
+                document.getElementById('videoPreview').style.display = 'block';
+                startCameraBtn.disabled = true;
+                captureImageBtn.disabled = false;
+            } catch (error) {
+                alert('Camera access is required for text capture. Please allow permission.');
+            }
+        });
+
+        captureImageBtn.addEventListener('click', () => {
+            const video = document.getElementById('videoPreview');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0);
+            
+            document.getElementById('capturedImage').src = canvas.toDataURL('image/png');
+            document.getElementById('capturedImage').style.display = 'block';
+            document.getElementById('videoPreview').style.display = 'none';
+            
+            // Stop camera
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Payment Modal
+        const paymentModal = document.getElementById('paymentModal');
+        let currentService = ''; // 'basic' or 'advanced'
+        let currentPrice = 0;
+
+        function showPaymentModal(service, price) {
+            currentService = service;
+            currentPrice = price;
+            paymentModal.style.display = 'flex';
+        }
+
+        document.getElementById('cancelPayment').addEventListener('click', () => {
+            paymentModal.style.display = 'none';
+        });
+
+        // M-Pesa Payment Simulation
+        document.getElementById('confirmPayment').addEventListener('click', () => {
+            const confirmBtn = document.getElementById('confirmPayment');
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            confirmBtn.disabled = true;
+
+            // Simulate M-Pesa payment process
+            setTimeout(() => {
+                // Simulate successful payment
+                paymentModal.style.display = 'none';
+                
+                // Show success message
+                alert('✅ Payment successful! Check your phone for M-Pesa confirmation. Your conversion has been processed.');
+                
+                // Reset button
+                confirmBtn.innerHTML = '<i class="fas fa-mobile-alt"></i> Pay via M-Pesa';
+                confirmBtn.disabled = false;
+                
+                // Process the conversion based on service type
+                processConversion(currentService);
+                
+            }, 3000);
+        });
+
+        // Conversion functions
+        function processConversion(serviceType) {
+            if (serviceType === 'basic') {
+                // Process basic conversion
+                const activeTab = document.querySelector('#basic-service .feature-tab.active').getAttribute('data-tab');
+                if (activeTab === 'audio-to-text-basic') {
+                    document.getElementById('resultBasic').innerHTML = 
+                        '<p style="color: green;"><i class="fas fa-check-circle"></i> <strong>Conversion Successful!</strong></p>' +
+                        '<p>This is your converted text from the audio file. In a real implementation, this would be the actual transcribed content.</p>' +
+                        '<p>Thank you for using AudioText Pro!</p>';
+                } else {
+                    const text = document.getElementById('textInputBasic').value;
+                    document.getElementById('resultBasic').innerHTML = 
+                        '<p style="color: green;"><i class="fas fa-check-circle"></i> <strong>Audio Generated!</strong></p>' +
+                        '<p>Your text has been converted to audio successfully.</p>' +
+                        '<audio controls style="width: 100%; margin-top: 10px;" src="https://www.soundjay.com/button/beep-07.wav"></audio>';
+                }
+            } else {
+                // Process advanced conversion
+                const activeTab = document.querySelector('#advanced-service .feature-tab.active').getAttribute('data-tab');
+                if (activeTab === 'live-record') {
+                    document.getElementById('resultAdvanced').innerHTML = 
+                        '<p style="color: green;"><i class="fas fa-check-circle"></i> <strong>Live Recording Converted!</strong></p>' +
+                        '<p>Your live recording has been transcribed to text successfully.</p>' +
+                        '<p><strong>Transcribed Text:</strong> "This is a demonstration of live audio transcription. In production, this would show the actual text from your recording."</p>';
+                } else {
+                    document.getElementById('resultAdvanced').innerHTML = 
+                        '<p style="color: green;"><i class="fas fa-check-circle"></i> <strong>Image Text Extracted!</strong></p>' +
+                        '<p>Text has been successfully extracted from your image/capture.</p>' +
+                        '<p><strong>Extracted Text:</strong> "This is sample text extracted from the image. Optical Character Recognition would process actual text in production."</p>';
+                }
+            }
+        }
+
+        // Convert button handlers with trial check
+        document.getElementById('convertBasic').addEventListener('click', () => {
+            if (basicTrials > 0) {
+                // Use free trial
+                basicTrials--;
+                document.getElementById('basicTrials').textContent = basicTrials;
+                processConversion('basic');
+                alert(`🎉 Free trial used! ${basicTrials} trials remaining.`);
+            } else {
+                // Require payment
+                showPaymentModal('basic', 1);
+            }
+        });
+
+        document.getElementById('convertAdvanced').addEventListener('click', () => {
+            if (advancedTrials > 0) {
+                // Use free trial
+                advancedTrials--;
+                document.getElementById('advancedTrials').textContent = advancedTrials;
+                processConversion('advanced');
+                alert(`🎉 Free trial used! ${advancedTrials} trials remaining.`);
+            } else {
+                // Require payment
+                showPaymentModal('advanced', 2);
+            }
+        });
+
+        // Clear buttons
+        document.getElementById('clearBasic').addEventListener('click', () => {
+            document.getElementById('audioFileBasic').value = '';
+            document.getElementById('audioPlayerBasic').style.display = 'none';
+            document.getElementById('textInputBasic').value = '';
+            document.getElementById('resultBasic').innerHTML = 'Your conversion result will appear here...';
+        });
+
+        document.getElementById('clearAdvanced').addEventListener('click', () => {
+            // Stop recording if active
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+            
+            // Stop camera if active
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Reset all advanced inputs
+            document.getElementById('recordedAudio').style.display = 'none';
+            document.getElementById('videoPreview').style.display = 'none';
+            document.getElementById('capturedImage').style.display = 'none';
+            document.getElementById('imagePreviewAdvanced').style.display = 'none';
+            document.getElementById('imageFileAdvanced').value = '';
+            document.getElementById('resultAdvanced').innerHTML = 'Your processed content will appear here...';
+            
+            // Reset buttons
+            startRecordBtn.disabled = false;
+            stopRecordBtn.disabled = true;
+            startRecordBtn.classList.remove('recording');
+            startCameraBtn.disabled = false;
+            captureImageBtn.disabled = true;
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === paymentModal) {
+                paymentModal.style.display = 'none';
+            }
+        });
+
+        // Add service IDs for selection
+        document.querySelectorAll('.service-card')[0].id = 'basic-service';
+        document.querySelectorAll('.service-card')[1].id = 'advanced-service';
+    </script>
+</body>
+</html n>
